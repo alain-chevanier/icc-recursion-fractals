@@ -12,7 +12,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode
-public class Polygon {
+public class Polygon implements Shape {
   private List<Point> vertices;
 
   /**

@@ -3,7 +3,7 @@ package unam.ciencias.icc;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SierpinskiTriangleGenerator implements FractalGenerator {
+public class SierpinskiTriangleGenerator implements FractalGenerator<Polygon> {
   @Override
   public List<Polygon> generate(List<Polygon> input, int depth) {
     if (depth <= 0) {

@@ -48,11 +48,12 @@ public class App {
 
     var fractalGenerator = new SierpinskiTriangleGenerator();
 
-    var fractal = fractalGenerator.generate(List.of(triangle), 6);
+    var fractal = fractalGenerator.generate(List.of(triangle), 3);
     System.out.println("Fractal structure generated");
 
-    var painter = new PolygonsImageGenerator();
-    var image = painter.paint(fractal);
+    var polygonRenderer = new PolygonRenderer();
+    var imageGenerator = new GeometricImageGenerator<>(polygonRenderer);
+    var image = imageGenerator.paint(fractal);
     System.out.println("Done generating the image");
 
     persistImageToResources("fractal_image_1.png", ImageFormat.PNG, image);
