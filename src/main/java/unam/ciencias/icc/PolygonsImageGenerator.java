@@ -31,24 +31,19 @@ public class PolygonsImageGenerator
     var lowerRightCorner = calculateLowerRightCorner(polygons);
     var bufferedImage = getCanvas(upperLeftCorner, lowerRightCorner);
     var graphics = getGraphics(bufferedImage);
-    draw(graphics, polygons, upperLeftCorner);
+    polygons.forEach(p -> drawPolygon(p, upperLeftCorner, graphics));
     return bufferedImage;
   }
 
-  private void draw(Graphics graphics, List<Polygon> polygons, Point upperLeftCorner) {
-    for (var polygon : polygons) {
-      drawPolygon(graphics, polygon, upperLeftCorner);
-    }
-  }
-
-  private void drawPolygon(Graphics graphics, Polygon polygon, Point upperLeftCorner) {
-    for (var lineSegment : polygon.getEdges()) {
-      int x1 = round(fitX(lineSegment.beg(), upperLeftCorner)),
-          y1 = round(fitY(lineSegment.beg(), upperLeftCorner)),
-          x2 = round(fitX(lineSegment.end(), upperLeftCorner)),
-          y2 = round(fitY(lineSegment.end(), upperLeftCorner));
-      graphics.drawLine(x1, y1, x2, y2);
-    }
+  private void drawPolygon(Polygon polygon, Point upperLeftCorner, Graphics graphics) {
+    polygon.getEdges()
+      .forEach(lineSegment -> {
+          int x1 = fitXInCanvas(lineSegment.beg(), upperLeftCorner),
+            y1 = fitYInCanvas(lineSegment.beg(), upperLeftCorner),
+            x2 = fitXInCanvas(lineSegment.end(), upperLeftCorner),
+            y2 = fitYInCanvas(lineSegment.end(), upperLeftCorner);
+          graphics.drawLine(x1, y1, x2, y2);
+        });
   }
 
   private Point calculateUpperLeftCorner(List<Polygon> polygons) {
@@ -90,12 +85,11 @@ public class PolygonsImageGenerator
                    .flatMap(p -> p.getVertices().stream());
   }
 
-  private float fitX(Point point, Point upperLeftCorner) {
-    return point.x() - upperLeftCorner.x();
+  private int fitXInCanvas(Point point, Point upperLeftCorner) {
+    return round(point.x() - upperLeftCorner.x());
   }
 
-  private float fitY(Point point, Point upperLeftCorner) {
-    return point.y() - upperLeftCorner.y();
+  private int fitYInCanvas(Point point, Point upperLeftCorner) {
+    return round(point.y() - upperLeftCorner.y());
   }
-
 }
