@@ -1,0 +1,8 @@
+.DS_Store
+.classpath
+.factorypath
+.project
+.settings
+target
+latex
+src/test/resources/output_image_processing/*
