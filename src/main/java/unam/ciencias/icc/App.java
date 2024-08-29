@@ -46,9 +46,10 @@ public class App {
                                new Point(800f, triangleHeight),
                                new Point(400f, 0f));
 
-    var fractalGenerator = new SierpinskiTriangleGenerator();
+    var recursiveStep = new SierpinskiTriangleRecursiveStep();
+    var fractalGenerator = new FractalGenerator<Polygon>(recursiveStep);
 
-    var fractal = fractalGenerator.generate(List.of(triangle), 3);
+    var fractal = fractalGenerator.generate(List.of(triangle), 5);
     System.out.println("Fractal structure generated");
 
     var polygonRenderer = new PolygonRenderer();

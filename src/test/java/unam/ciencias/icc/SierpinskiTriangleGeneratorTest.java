@@ -1,36 +1,59 @@
 package unam.ciencias.icc;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.equalTo;
 
 public class SierpinskiTriangleGeneratorTest {
+
+  SierpinskiTriangleRecursiveStep recursiveStep;
+
+  @BeforeEach
+  void setup() {
+    recursiveStep = new SierpinskiTriangleRecursiveStep();
+  }
+
   @Test
   public void test_Case() {
     var triangleHeight =  400 * (float) Math.sqrt(3);
-    var triangle = new Polygon(new Point(0f, triangleHeight),
-                               new Point(800f, triangleHeight),
-                               new Point(400f, 0f));
-    var fractalGenerator = new SierpinskiTriangleGenerator();
+    var triangle = new Polygon(new Point(0f, 0f),
+                               new Point(800f, 0f),
+                               new Point(400f, triangleHeight));
 
-    var actualOutput = fractalGenerator.generate(List.of(triangle), 0);
+    var actualOutput = recursiveStep.recursiveStep(triangle);
 
-    var expectedOutput = new Polygon(new Point(0f, triangleHeight),
-                                     new Point(800f, triangleHeight),
-                                     new Point(400f, 0f));
-    assertPolygonsAreSimilar(null, null);
+    var subTriangleHeight = 200 * (float) Math.sqrt(3);
+    var expectedOutput = List.of(
+        new Polygon(new Point(0f, 0f),
+                    new Point(400f, 0f),
+                    new Point(200f, subTriangleHeight)),
+        new Polygon(new Point(400f, 0f),
+                    new Point(800f, 0f),
+                    new Point(600f, subTriangleHeight)),
+        new Polygon(new Point(200f, subTriangleHeight),
+                    new Point(600f, subTriangleHeight),
+                    new Point(400f, triangleHeight))
+      );
+
+    assertThat(sort(actualOutput), is(equalTo(sort(expectedOutput))));
   }
 
-  void assertPolygonsAreSimilar(Polygon a, Polygon b) {
-
+  List<Polygon> sort(List<Polygon> polygons) {
+    return polygons.stream()
+        .sorted(this::comparePolygons)
+        .collect(Collectors.toList());
   }
 
-  void assertPointsAreClose(Point a, Point b) {
-
+  int comparePolygons(Polygon a, Polygon b) {
+    var p0LowestLeftMost = a.getLowestLeftMostVertex();
+    var p1LowestLeftMost = b.getLowestLeftMostVertex();
+    return p0LowestLeftMost.compareTo(p1LowestLeftMost);
   }
 }

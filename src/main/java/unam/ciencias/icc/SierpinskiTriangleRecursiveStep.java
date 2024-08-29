@@ -1,23 +1,12 @@
 package unam.ciencias.icc;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class SierpinskiTriangleGenerator implements FractalGenerator<Polygon> {
+public class SierpinskiTriangleRecursiveStep
+    implements FractalRecursiveStep<Polygon> {
+
   @Override
-  public List<Polygon> generate(List<Polygon> input, int depth) {
-    if (depth <= 0) {
-      return input;
-    }
-
-    var nextInput = input.stream()
-                         .map(triangle -> splitTriangle(triangle))
-                         .flatMap(list -> list.stream())
-                         .collect(Collectors.toList());
-    return generate(nextInput, depth - 1);
-  }
-
-  private List<Polygon> splitTriangle(Polygon polygon) {
+  public List<Polygon> recursiveStep(Polygon polygon) {
     var v0 = polygon.getVertex(0);
     var v1 = polygon.getVertex(1);
     var v2 = polygon.getVertex(2);
