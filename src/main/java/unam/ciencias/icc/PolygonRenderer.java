@@ -1,13 +1,13 @@
 package unam.ciencias.icc;
 
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import static java.lang.Math.round;
 
 public class PolygonRenderer implements ShapeRenderer<Polygon> {
 
   @Override
-  public void render(Polygon shape, Point upperLeftCorner, Graphics graphics) {
+  public void render(Polygon shape, Point2D upperLeftCorner, Graphics2D graphics) {
     shape.getEdges()
       .forEach(lineSegment -> {
           int x1 = fitXInCanvas(lineSegment.beg(), upperLeftCorner),
@@ -18,11 +18,11 @@ public class PolygonRenderer implements ShapeRenderer<Polygon> {
         });
   }
 
-  private int fitXInCanvas(Point point, Point upperLeftCorner) {
+  private int fitXInCanvas(Point2D point, Point2D upperLeftCorner) {
     return round(point.x() - upperLeftCorner.x());
   }
 
-  private int fitYInCanvas(Point point, Point upperLeftCorner) {
+  private int fitYInCanvas(Point2D point, Point2D upperLeftCorner) {
     return round(point.y() - upperLeftCorner.y());
   }
 }

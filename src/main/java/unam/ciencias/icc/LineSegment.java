@@ -1,3 +1,3 @@
 package unam.ciencias.icc;
 
-public record LineSegment (Point beg, Point end) {}
+public record LineSegment (Point2D beg, Point2D end) {}

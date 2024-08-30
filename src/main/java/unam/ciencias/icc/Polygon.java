@@ -13,7 +13,7 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 public class Polygon implements Shape {
-  private List<Point> vertices;
+  private List<Point2D> vertices;
 
   /**
    * This creates a polygon using the provided vertices,
@@ -22,14 +22,14 @@ public class Polygon implements Shape {
    * v_0, v_1, v_2, then there will be the edges:
    * E(v_0, v_1), E(v_1, v_2), E(v_2, v_0).
    */
-  public Polygon(Point... vertices) {
+  public Polygon(Point2D... vertices) {
     this.vertices = new ArrayList<>();
     for (var p : vertices) {
       this.vertices.add(p);
     }
   }
 
-  public Point getVertex(int index) {
+  public Point2D getVertex(int index) {
     return vertices.get(index);
   }
 
@@ -51,7 +51,7 @@ public class Polygon implements Shape {
                     .collect(Collectors.toList());
   }
 
-  public Point getLowestLeftMostVertex() {
+  public Point2D getLowestLeftMostVertex() {
     return vertices.stream()
                    .min((v0, v1) -> v0.compareTo(v1))
                    .orElseThrow();

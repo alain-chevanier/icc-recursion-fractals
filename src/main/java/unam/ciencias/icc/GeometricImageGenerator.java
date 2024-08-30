@@ -1,7 +1,7 @@
 package unam.ciencias.icc;
 
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,11 +16,20 @@ public class GeometricImageGenerator<T extends Shape>
   private Color lineColor;
   private ShapeRenderer<T> renderer;
 
-
   public GeometricImageGenerator(ShapeRenderer<T> renderer) {
     this.backgroundColor = Color.WHITE;
     this.lineColor = Color.BLUE;
     this.renderer = renderer;
+  }
+
+  @Override
+  public BufferedImage paint(T shape) {
+    var upperLeftCorner = calculateUpperLeftCorner(shape.getVertices());
+    var lowerRightCorner = calculateLowerRightCorner(shape.getVertices());
+    var bufferedImage = getCanvas(upperLeftCorner, lowerRightCorner);
+    var graphics = getGraphics(bufferedImage);
+    renderer.render(shape, upperLeftCorner, graphics);
+    return bufferedImage;
   }
 
   @Override
@@ -34,24 +43,14 @@ public class GeometricImageGenerator<T extends Shape>
     return bufferedImage;
   }
 
-  @Override
-  public BufferedImage paint(T shape) {
-    var upperLeftCorner = calculateUpperLeftCorner(shape.getVertices());
-    var lowerRightCorner = calculateLowerRightCorner(shape.getVertices());
-    var bufferedImage = getCanvas(upperLeftCorner, lowerRightCorner);
-    var graphics = getGraphics(bufferedImage);
-    renderer.render(shape, upperLeftCorner, graphics);
-    return bufferedImage;
-  }
-
-  private List<Point> collectVertices(List<T> shapes) {
+  private List<Point2D> collectVertices(List<T> shapes) {
     return shapes.stream()
         .map(s -> s.getVertices())
         .flatMap(vs -> vs.stream())
         .collect(Collectors.toList());
   }
 
-  private Point calculateUpperLeftCorner(List<Point> vertices) {
+  private Point2D calculateUpperLeftCorner(List<Point2D> vertices) {
     float minX = vertices.stream()
                          .min((v0, v1) -> Float.compare(v0.x(), v1.x()))
                          .map(v -> v.x())
@@ -60,10 +59,10 @@ public class GeometricImageGenerator<T extends Shape>
                          .min((v0, v1) -> Float.compare(v0.y(), v1.y()))
                          .map(v -> v.y())
                          .orElseThrow();
-    return new Point(minX, minY);
+    return new Point2D(minX, minY);
   }
 
-  private Point calculateLowerRightCorner(List<Point> vertices) {
+  private Point2D calculateLowerRightCorner(List<Point2D> vertices) {
     float maxX = vertices.stream()
                          .max((v0, v1) -> Float.compare(v0.x(), v1.x()))
                          .map(v -> v.x())
@@ -72,10 +71,10 @@ public class GeometricImageGenerator<T extends Shape>
                          .max((v0, v1) -> Float.compare(v0.y(), v1.y()))
                          .map(v -> v.y())
                          .orElseThrow();
-    return new Point(maxX, maxY);
+    return new Point2D(maxX, maxY);
   }
 
-  private BufferedImage getCanvas(Point upperLeftCorner, Point lowerRightCorner) {
+  private BufferedImage getCanvas(Point2D upperLeftCorner, Point2D lowerRightCorner) {
     int width = (int) round(ceil(abs(lowerRightCorner.x() - upperLeftCorner.x()))) + 2,
         height = (int) round(ceil(abs(lowerRightCorner.y() - upperLeftCorner.y()))) + 2;
 
@@ -83,8 +82,8 @@ public class GeometricImageGenerator<T extends Shape>
     return Image.buildBufferedImage(image);
   }
 
-  private Graphics getGraphics(BufferedImage image) {
-    var graphics = image.getGraphics();
+  private Graphics2D getGraphics(BufferedImage image) {
+    var graphics = image.createGraphics();
     graphics.setColor(this.lineColor);
     return graphics;
   }

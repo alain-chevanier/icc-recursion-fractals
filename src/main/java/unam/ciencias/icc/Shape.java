@@ -3,5 +3,5 @@ package unam.ciencias.icc;
 import java.util.List;
 
 public interface Shape {
- List<Point> getVertices();
+ List<Point2D> getVertices();
 }

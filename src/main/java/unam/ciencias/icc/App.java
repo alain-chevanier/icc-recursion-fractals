@@ -42,9 +42,9 @@ public class App {
 
     var triangleHeight =  400 * (float) Math.sqrt(3);
 
-    var triangle = new Polygon(new Point(0f, triangleHeight),
-                               new Point(800f, triangleHeight),
-                               new Point(400f, 0f));
+    var triangle = new Polygon(new Point2D(0f, triangleHeight),
+                               new Point2D(800f, triangleHeight),
+                               new Point2D(400f, 0f));
 
     var recursiveStep = new SierpinskiTriangleRecursiveStep();
     var fractalGenerator = new FractalGenerator<Polygon>(recursiveStep);
