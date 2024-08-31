@@ -47,7 +47,7 @@ public class App {
     var recursiveStep = new SierpinskiTriangleRecursiveStep();
     var fractalGenerator = new FractalGenerator<>(recursiveStep);
 
-    var fractal = fractalGenerator.generate(List.of(triangle), 5);
+    var fractal = fractalGenerator.generate(List.of(triangle), 7);
     System.out.println("ST: Fractal structure generated");
 
     var lineSegmentRenderer = new LineSegmentRenderer();
