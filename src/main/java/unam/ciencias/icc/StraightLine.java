@@ -69,11 +69,11 @@ public class StraightLine {
     return - this.a / this.b;
   }
 
-  public float getY(float x) {
+  public float calculateY(float x) {
     return (-a*x + c) / b;
   }
 
-  public float getX(float y) {
+  public float calculateX(float y) {
     return (-b*y + c) / a;
   }
 
