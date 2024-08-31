@@ -7,19 +7,19 @@ public class SierpinskiTriangleRecursiveStep
 
   @Override
   public List<Polygon> apply(Polygon polygon) {
+    if (polygon.getVertices().size() != 3) {
+      throw new IllegalArgumentException("This only handles triangles");
+    }
+
     var v0 = polygon.getVertex(0);
     var v1 = polygon.getVertex(1);
     var v2 = polygon.getVertex(2);
-    var midV0V1 = new Point2D(middlePoint(v0.x(), v1.x()), middlePoint(v0.y(), v1.y()));
-    var midV1V2 = new Point2D(middlePoint(v1.x(), v2.x()), middlePoint(v1.y(), v2.y()));
-    var midV2V0 = new Point2D(middlePoint(v2.x(), v0.x()), middlePoint(v2.y(), v0.y()));
+    var midV0V1 = polygon.getEdge(0).getInnerPoint(1, 2);
+    var midV1V2 = polygon.getEdge(1).getInnerPoint(1, 2);
+    var midV2V0 = polygon.getEdge(2).getInnerPoint(1, 2);
 
     return List.of(new Polygon(v0, midV0V1, midV2V0),
                    new Polygon(midV0V1, v1, midV1V2),
                    new Polygon(midV2V0, midV1V2, v2));
-  }
-
-  private float middlePoint(float a, float b) {
-    return (a + b) / 2;
   }
 }

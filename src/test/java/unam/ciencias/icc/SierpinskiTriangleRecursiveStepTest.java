@@ -42,6 +42,7 @@ public class SierpinskiTriangleRecursiveStepTest {
     assertThat(sort(actualOutput), is(equalTo(sort(expectedOutput))));
   }
 
+
   List<Polygon> sort(List<Polygon> polygons) {
     return polygons.stream()
         .sorted(this::comparePolygons)

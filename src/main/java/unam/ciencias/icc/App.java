@@ -4,12 +4,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
 
 public class App {
 
@@ -37,27 +34,44 @@ public class App {
     }
   }
 
-  public static void main(String[] a) {
+  public static void main(String[] args) {
     System.out.println("Doing WORK");
 
-    var triangleHeight =  400 * (float) Math.sqrt(3);
+    var triangleHeight = 400 * (float) Math.sqrt(3);
 
-    var triangle = new Polygon(new Point2D(0f, triangleHeight),
-                               new Point2D(800f, triangleHeight),
-                               new Point2D(400f, 0f));
+    var a = new Point2D(0f, triangleHeight);
+    var b = new Point2D(800f, triangleHeight);
+    var c = new Point2D(400f, 0f);
+    var triangle = new Polygon(a, b, c);
 
     var recursiveStep = new SierpinskiTriangleRecursiveStep();
-    var fractalGenerator = new FractalGenerator<Polygon>(recursiveStep);
+    var fractalGenerator = new FractalGenerator<>(recursiveStep);
 
     var fractal = fractalGenerator.generate(List.of(triangle), 5);
-    System.out.println("Fractal structure generated");
+    System.out.println("ST: Fractal structure generated");
 
-    var polygonRenderer = new PolygonRenderer();
+    var lineSegmentRenderer = new LineSegmentRenderer();
+    var polygonRenderer = new PolygonRenderer(lineSegmentRenderer);
     var imageGenerator = new GeometricImageGenerator<>(polygonRenderer);
     var image = imageGenerator.paint(fractal);
-    System.out.println("Done generating the image");
+    System.out.println("ST: Done generating the image");
 
-    persistImageToResources("fractal_image_1.png", ImageFormat.PNG, image);
-    System.out.println("Done outputing the image");
+    persistImageToResources("fractal_image_sierpinski_triangle.png", ImageFormat.PNG, image);
+    System.out.println("ST: Done outputing the image");
+
+    var ab = new LineSegment(a, b);
+    var bc = new LineSegment(b, c);
+    var ca = new LineSegment(c, a);
+
+    var recursiveStep2 = new KochSnowflakeRecursiveStep();
+    var fractalGenerator2 = new FractalGenerator<>(recursiveStep2);
+    var fractal2 = fractalGenerator2.generate(List.of(ab, bc, ca), 5);
+    System.out.println("KS: Fractal structure generated -> " + fractal2.size());
+    var imageGenerator2 = new GeometricImageGenerator<>(lineSegmentRenderer);
+    var image2 = imageGenerator2.paint(fractal2);
+    System.out.println("KS: Done generating the image");
+
+    persistImageToResources("fractal_image_koch_snowflake.png", ImageFormat.PNG, image2);
+    System.out.println("KS: Done outputing the image");
   }
 }
