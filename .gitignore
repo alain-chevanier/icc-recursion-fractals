@@ -5,4 +5,5 @@
 .settings
 target
 latex
+src/main/resources/output_image_processing/*
 src/test/resources/output_image_processing/*
