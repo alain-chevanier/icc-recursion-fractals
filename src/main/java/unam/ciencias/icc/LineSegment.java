@@ -12,7 +12,7 @@ import static java.lang.Math.pow;
 @Getter
 @ToString
 @EqualsAndHashCode
-public class LineSegment implements Shape, Comparable<LineSegment> {
+public class LineSegment implements Shape {
   private final Point2D beg;
   private final Point2D end;
   private final float slope;
@@ -38,13 +38,6 @@ public class LineSegment implements Shape, Comparable<LineSegment> {
     return List.of(beg, end);
   }
 
-  @Override
-  public int compareTo(LineSegment other) {
-    var first = this.getLowestLeftMost();
-    var otherFirst = other.getLowestLeftMost();
-    return first.compareTo(otherFirst);
-  }
-
   public Point2D getInnerPoint(float k) {
     var a = beg;
     var b = end;
@@ -65,11 +58,6 @@ public class LineSegment implements Shape, Comparable<LineSegment> {
 
   public boolean isVertical() {
     return Math.abs(beg.x() - end.x()) < 0.01;
-  }
-
-  public Point2D getLowestLeftMost() {
-    var p = new Polygon(beg, end);
-    return p.getLowestLeftMostVertex();
   }
 
   private float getInnerNumber(float a, float b, float k) {

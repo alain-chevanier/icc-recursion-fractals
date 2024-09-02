@@ -8,13 +8,11 @@ import lombok.ToString;
 import static java.lang.Math.abs;
 
 /**
- * a*x + b*y = c
+ * Representation of a StraightLine of the form `a*x + b*y = c`
  * y = -(a/b)*x + c/b
  * x = - (b/a)*y + c/a
  * -> slope: -(a/b)
- *
- * p.x*a + p.y*b = c
- * q.x*a + q.y*b = c
+ * -> vertical offset: (c/b)
  */
 @ToString
 @Getter
@@ -45,7 +43,7 @@ public class StraightLine {
     // y = (p/q)*x + k
     // => -(p/q)*x + y = k
     // => -p*x + q*y = k*q
-    float kTimeQ = (slopeDenominator*p.y() - slopeNumerator*p.x());
+    float kTimeQ = slopeDenominator * p.y() - slopeNumerator * p.x();
     return new StraightLine(-slopeNumerator, slopeDenominator, kTimeQ);
   }
 
@@ -58,7 +56,7 @@ public class StraightLine {
     // y = m*x + k
     // => k = y - m*x;
     // -m*x + y = k
-    float k = p.y() - slope*p.x();
+    float k = p.y() - slope * p.x();
     return new StraightLine(-slope, 1, k);
   }
 
@@ -77,7 +75,7 @@ public class StraightLine {
     return (-b*y + c) / a;
   }
 
-  public Optional<Point2D> intersect(StraightLine line) {
+  public Optional<Point2D> intercept(StraightLine line) {
     float determinant = this.a * line.b - this.b * line.a;
 
     if (abs(determinant) < EPSILON) {
@@ -114,7 +112,7 @@ public class StraightLine {
 
   public float getDistance(Point2D p) {
     var orthogonalAtPoint = getOrthogonalAtPoint(p);
-    var intersection = intersect(orthogonalAtPoint);
+    var intersection = intercept(orthogonalAtPoint);
     return new LineSegment(intersection.get(), p).getLength();
 
   }

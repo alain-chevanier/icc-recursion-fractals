@@ -62,7 +62,6 @@ public class App {
     var ab = new LineSegment(a, b);
     var bc = new LineSegment(b, c);
     var ca = new LineSegment(c, a);
-
     var recursiveStep2 = new KochSnowflakeRecursiveStep();
     var fractalGenerator2 = new FractalGenerator<>(recursiveStep2);
     var fractal2 = fractalGenerator2.generate(List.of(ab, bc, ca), 5);
@@ -73,5 +72,17 @@ public class App {
 
     persistImageToResources("fractal_image_koch_snowflake.png", ImageFormat.PNG, image2);
     System.out.println("KS: Done outputing the image");
+
+    var d = new Point2D(0f, 800f);
+    var e = new Point2D(800f, 0f);
+    var recursiveStep3 = new DragonCurveRecursiveStep();
+    var fractalGenerator3 = new FractalGenerator<>(recursiveStep3);
+    var fractal3 = fractalGenerator3.generate(List.of(new LineSegment(d, e)), 17);
+    System.out.println("DC: Fractal structure generated -> " + fractal3.size());
+    var image3 = imageGenerator2.paint(fractal3);
+    System.out.println("DC: Done generating the image");
+
+    persistImageToResources("fractal_image_drago_curve.png", ImageFormat.PNG, image3);
+    System.out.println("DC: Done outputing the image");
   }
 }

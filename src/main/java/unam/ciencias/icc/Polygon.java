@@ -50,10 +50,4 @@ public class Polygon implements Shape {
                     .map(index -> this.getEdge(index))
                     .collect(Collectors.toList());
   }
-
-  public Point2D getLowestLeftMostVertex() {
-    return vertices.stream()
-                   .min((v0, v1) -> v0.compareTo(v1))
-                   .orElseThrow();
-  }
 }

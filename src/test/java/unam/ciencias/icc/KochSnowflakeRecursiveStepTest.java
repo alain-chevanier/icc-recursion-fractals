@@ -1,15 +1,13 @@
 package unam.ciencias.icc;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static unam.ciencias.icc.ShapeTestUtils.sort;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.equalTo;
-
 
 public class KochSnowflakeRecursiveStepTest {
   KochSnowflakeRecursiveStep recursiveStep;
@@ -179,11 +177,5 @@ public class KochSnowflakeRecursiveStepTest {
                                  new LineSegment(d, b));
 
     assertThat(sort(actualOutput), is(equalTo(sort(expectedOutput))));
-  }
-
-  List<LineSegment> sort(List<LineSegment> lineSegments) {
-    return lineSegments.stream()
-                       .sorted((l1, l2) -> l1.compareTo(l2))
-                       .collect(Collectors.toList());
   }
 }

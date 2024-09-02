@@ -2,10 +2,9 @@ package unam.ciencias.icc;
 
 import java.util.List;
 
-import static java.lang.Math.sqrt;
-import static java.lang.Math.pow;
+public class KochSnowflakeRecursiveStep
+    implements FractalRecursiveStep<LineSegment> {
 
-public class KochSnowflakeRecursiveStep implements FractalRecursiveStep<LineSegment> {
   @Override
   public List<LineSegment> apply(LineSegment lineSegment) {
     var a = lineSegment.beg();
@@ -21,12 +20,16 @@ public class KochSnowflakeRecursiveStep implements FractalRecursiveStep<LineSegm
 
   private Point2D calcF(LineSegment cd) {
     var e = cd.getInnerPoint(1, 2);
-    int orderSign = cd.beg().compareTo(cd.end()) < 0 ? 1 : -1;
-    int slopeSign = cd.getSlope() > 0 ? -1 : 1;
     var orthogonalLineByE = StraightLine.build(cd.beg(), cd.end())
                                         .getOrthogonalAtPoint(e);
     var circle = new Circle(cd.beg(), cd.getLength());
-    return circle.intersect(orthogonalLineByE, slopeSign * orderSign).get();
+    return circle.intercept(orthogonalLineByE, calculateSign(cd))
+                 .orElseThrow();
+  }
 
+  private int calculateSign(LineSegment cd) {
+    int orderSign = cd.beg().compareTo(cd.end()) < 0 ? 1 : -1;
+    int slopeSign = cd.getSlope() > 0 ? -1 : 1;
+    return slopeSign * orderSign;
   }
 }

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static unam.ciencias.icc.ShapeTestUtils.sort;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.equalTo;
@@ -40,18 +41,5 @@ public class SierpinskiTriangleRecursiveStepTest {
                     new Point2D(400f, triangleHeight)));
 
     assertThat(sort(actualOutput), is(equalTo(sort(expectedOutput))));
-  }
-
-
-  List<Polygon> sort(List<Polygon> polygons) {
-    return polygons.stream()
-        .sorted(this::comparePolygons)
-        .collect(Collectors.toList());
-  }
-
-  int comparePolygons(Polygon a, Polygon b) {
-    var p0LowestLeftMost = a.getLowestLeftMostVertex();
-    var p1LowestLeftMost = b.getLowestLeftMostVertex();
-    return p0LowestLeftMost.compareTo(p1LowestLeftMost);
   }
 }
