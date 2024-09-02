@@ -1,5 +1,12 @@
 package unam.ciencias.icc;
 
+import java.util.List;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -8,24 +15,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.equalTo;
 
-import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.Mock;
-
 @ExtendWith(MockitoExtension.class)
 public class FractalGeneratorTest {
   @Mock
   FractalRecursiveStep<LineSegment> recursiveStepMock;
 
+  @InjectMocks
   FractalGenerator<LineSegment> fractalGenerator;
-
-  @BeforeEach
-  void setup() {
-    fractalGenerator = new FractalGenerator<>(recursiveStepMock);
-  }
 
   @Test
   public void test_NoCalls() {
