@@ -16,7 +16,7 @@ public class FractalGenerator<T extends Shape> {
       return input;
     }
     var nextInput = input.stream()
-                         .map(triangle -> recursiveStep.apply(triangle))
+                         .map(shape -> recursiveStep.apply(shape))
                          .flatMap(list -> list.stream())
                          .collect(Collectors.toList());
     return generate(nextInput, iterations - 1);

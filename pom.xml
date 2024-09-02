@@ -14,7 +14,7 @@
     <java.version>17</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
-    <junit.jupiter.version>5.7.2</junit.jupiter.version>
+    <junit.jupiter.version>5.11.0</junit.jupiter.version>
     <lombok.version>1.18.26</lombok.version>
     <git-code-format-maven-plugin.version>4.2</git-code-format-maven-plugin.version>
     <exec.mainClass>unam.ciencias.icc.App</exec.mainClass>
@@ -30,13 +30,19 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>1.10.19</version>
+      <version>5.13.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+    <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <version>5.13.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-core</artifactId>
-      <version>2.2</version>
+      <artifactId>hamcrest</artifactId>
+      <version>3.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
