@@ -8,6 +8,7 @@ import lombok.ToString;
 
 import static java.lang.Math.sqrt;
 import static java.lang.Math.pow;
+import static java.lang.Math.abs;
 
 @Getter
 @ToString
@@ -15,10 +16,16 @@ import static java.lang.Math.pow;
 public class LineSegment implements Shape {
   private final Point2D beg;
   private final Point2D end;
+  @ToString.Exclude
   private final float slope;
+  @ToString.Exclude
   private final float length;
 
   public LineSegment(Point2D beg, Point2D end) {
+    if (abs(beg.x() - end.x()) < 0.01
+        && abs(beg.y() - end.y()) < 0.01) {
+      throw new IllegalArgumentException("This is a point");
+    }
     this.beg = beg;
     this.end = end;
     this.slope = calcSlope();
@@ -77,7 +84,7 @@ public class LineSegment implements Shape {
   private float calcSlope() {
     var a = beg;
     var b = end;
-    if (b.x() == a.x()) {
+    if (abs(b.x() - a.x()) < 0.01) {
       return Float.MAX_VALUE;
     }
     return (b.y() - a.y()) / (b.x() - a.x());

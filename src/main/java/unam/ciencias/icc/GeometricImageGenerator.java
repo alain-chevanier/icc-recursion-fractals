@@ -14,9 +14,11 @@ public class GeometricImageGenerator<T extends Shape>
     implements ImageGenerator<T> {
   private Color backgroundColor;
   private Color lineColor;
+  private int padding;
   private ShapeRenderer<T> renderer;
 
   public GeometricImageGenerator(ShapeRenderer<T> renderer) {
+    this.padding = 20;
     this.backgroundColor = Color.WHITE;
     this.lineColor = Color.BLUE;
     this.renderer = renderer;
@@ -28,7 +30,8 @@ public class GeometricImageGenerator<T extends Shape>
     var lowerRightCorner = calculateLowerRightCorner(shape.getVertices());
     var bufferedImage = getCanvas(upperLeftCorner, lowerRightCorner);
     var graphics = getGraphics(bufferedImage);
-    renderer.render(shape, upperLeftCorner, graphics);
+    var renderingStartingPoint = calculateRenderingStartingPoint(upperLeftCorner);
+    renderer.render(shape, renderingStartingPoint, graphics);
     return bufferedImage;
   }
 
@@ -39,7 +42,8 @@ public class GeometricImageGenerator<T extends Shape>
     var lowerRightCorner = calculateLowerRightCorner(allVertices);
     var bufferedImage = getCanvas(upperLeftCorner, lowerRightCorner);
     var graphics = getGraphics(bufferedImage);
-    shapes.forEach(s -> renderer.render(s, upperLeftCorner, graphics));
+    var renderingStartingPoint = calculateRenderingStartingPoint(upperLeftCorner);
+    shapes.forEach(s -> renderer.render(s, renderingStartingPoint, graphics));
     return bufferedImage;
   }
 
@@ -74,9 +78,16 @@ public class GeometricImageGenerator<T extends Shape>
     return new Point2D(maxX, maxY);
   }
 
+  private Point2D calculateRenderingStartingPoint(Point2D upperLeftCorner) {
+    return new Point2D(upperLeftCorner.x() - padding,
+                       upperLeftCorner.y() - padding);
+  }
+
   private BufferedImage getCanvas(Point2D upperLeftCorner, Point2D lowerRightCorner) {
-    int width = (int) round(ceil(abs(lowerRightCorner.x() - upperLeftCorner.x()))) + 2,
-        height = (int) round(ceil(abs(lowerRightCorner.y() - upperLeftCorner.y()))) + 2;
+    int width = (int) round(ceil(abs(lowerRightCorner.x() - upperLeftCorner.x())))
+                      + padding*2,
+        height = (int) round(ceil(abs(lowerRightCorner.y() - upperLeftCorner.y())))
+                       + padding*2;
 
     var image = new Image(width, height, this.backgroundColor);
     return Image.buildBufferedImage(image);

@@ -96,7 +96,7 @@ public class KochSnowflakeRecursiveStepTest {
 
 
   @Test
-  public void test_positiveSlope_leftRightOrder_Case() {
+  public void test_PositiveSlope_leftRightOrder_Case() {
     var a = new Point2D(0f, 0f);
     var b = new Point2D(6f, 6f);
     var lineSegment = new LineSegment(a, b);
@@ -117,7 +117,7 @@ public class KochSnowflakeRecursiveStepTest {
   }
 
   @Test
-  public void test_negativeSlope_leftRightOrder_Case() {
+  public void test_NegativeSlope_leftRightOrder_Case() {
     var a = new Point2D(0f, 6f);
     var b = new Point2D(6f, 0f);
     var lineSegment = new LineSegment(a, b);
@@ -138,7 +138,7 @@ public class KochSnowflakeRecursiveStepTest {
   }
 
   @Test
-  public void test_positiveSlope_rightLeftOrder_Case() {
+  public void test_PositiveSlope_rightLeftOrder_Case() {
     var b = new Point2D(0f, 0f);
     var a = new Point2D(6f, 6f);
     var lineSegment = new LineSegment(a, b);
@@ -159,7 +159,7 @@ public class KochSnowflakeRecursiveStepTest {
   }
 
   @Test
-  public void test_negativeSlope_rightLeftOrder_Case() {
+  public void test_NegativeSlope_rightLeftOrder_Case() {
     var b = new Point2D(0f, 6f);
     var a = new Point2D(6f, 0f);
     var lineSegment = new LineSegment(a, b);

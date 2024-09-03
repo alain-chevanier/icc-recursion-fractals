@@ -3,9 +3,12 @@ package unam.ciencias.icc;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.Getter;
+
+@Getter
 public class FractalGenerator<T extends Shape> {
 
-  private FractalRecursiveStep<T> recursiveStep;
+  private final FractalRecursiveStep<T> recursiveStep;
 
   public FractalGenerator(FractalRecursiveStep<T> recursiveStep) {
     this.recursiveStep = recursiveStep;

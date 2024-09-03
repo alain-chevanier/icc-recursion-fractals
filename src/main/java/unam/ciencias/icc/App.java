@@ -11,31 +11,11 @@ public class App {
 
   private static final String INPUT_DIR = "src/main/resources/image_processing/";
   private static final String OUTPUT_DIR = "src/main/resources/output_image_processing/";
-
-  public static BufferedImage loadImageFromResources(String resourcePath) {
-    try {
-      String filePath = INPUT_DIR + resourcePath;
-      File file = new File(filePath);
-      return ImageIO.read(file);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  public static void persistImageToResources(
-      String resourcePath, ImageFormat format, BufferedImage image) {
-    try {
-      String destPath = OUTPUT_DIR + resourcePath;
-      File file = new File(destPath);
-      ImageIO.write(image, format.toString(), file);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
+  private static final boolean GENERATE_INTERMADIATE_IMAGE = false;
 
   public static void main(String[] args) {
     System.out.println("Doing WORK");
-    runSierpinskiTriangleExample(7);
+    runSierpinskiTriangleExample(6);
     runKockSnowflakeExample(5);
     runDragonCurveExample(15);
   }
@@ -50,17 +30,16 @@ public class App {
     var recursiveStep = new SierpinskiTriangleRecursiveStep();
     var fractalGenerator = new FractalGenerator<>(recursiveStep);
 
-    var fractal = fractalGenerator.generate(List.of(triangle), recursiveCalls);
-    System.out.println("ST: Fractal structure generated -> " + fractal.size());
-
+    var input = List.of(triangle);
     var lineSegmentRenderer = new LineSegmentRenderer();
     var polygonRenderer = new PolygonRenderer(lineSegmentRenderer);
     var imageGenerator = new GeometricImageGenerator<>(polygonRenderer);
-    var image = imageGenerator.paint(fractal);
-    System.out.println("ST: Done generating the image");
 
-    persistImageToResources("fractal_image_sierpinski_triangle.png", ImageFormat.PNG, image);
-    System.out.println("ST: Done outputing the image");
+     var image = imageGenerator.paint(input);
+     persistImageToResources(fractalGenerator.getRecursiveStep().getClass().getSimpleName() +
+                             "_0.png", ImageFormat.PNG, image);
+     doIterations(recursiveCalls, input, fractalGenerator, imageGenerator);
+
   }
 
   static void runKockSnowflakeExample(int recursiveCalls) {
@@ -75,16 +54,14 @@ public class App {
     var recursiveStep2 = new KochSnowflakeRecursiveStep();
     var fractalGenerator2 = new FractalGenerator<>(recursiveStep2);
 
-    var fractal2 = fractalGenerator2.generate(List.of(ab, bc, ca), recursiveCalls);
-    System.out.println("KS: Fractal structure generated -> " + fractal2.size());
-
     var lineSegmentRenderer = new LineSegmentRenderer();
     var imageGenerator2 = new GeometricImageGenerator<>(lineSegmentRenderer);
-    var image2 = imageGenerator2.paint(fractal2);
-    System.out.println("KS: Done generating the image");
 
-    persistImageToResources("fractal_image_koch_snowflake.png", ImageFormat.PNG, image2);
-    System.out.println("KS: Done outputing the image");
+    var input = List.of(ab, bc, ca);
+    var image2 = imageGenerator2.paint(input);
+    persistImageToResources(fractalGenerator2.getRecursiveStep().getClass().getSimpleName() +
+                            "_0.png", ImageFormat.PNG, image2);
+    doIterations(recursiveCalls, input, fractalGenerator2, imageGenerator2);
   }
 
   static void runDragonCurveExample(int recursiveCalls) {
@@ -95,15 +72,54 @@ public class App {
     var recursiveStep3 = new DragonCurveRecursiveStep();
     var fractalGenerator3 = new FractalGenerator<>(recursiveStep3);
 
-    var fractal3 = fractalGenerator3.generate(List.of(de), recursiveCalls);
-    System.out.println("DC: Fractal structure generated -> " + fractal3.size());
-
     var lineSegmentRenderer = new LineSegmentRenderer();
     var imageGenerator2 = new GeometricImageGenerator<>(lineSegmentRenderer);
-    var image3 = imageGenerator2.paint(fractal3);
-    System.out.println("DC: Done generating the image");
 
-    persistImageToResources("fractal_image_drago_curve.png", ImageFormat.PNG, image3);
-    System.out.println("DC: Done outputing the image");
+    var input = List.of(de);
+    var image3 = imageGenerator2.paint(input);
+    persistImageToResources(fractalGenerator3.getRecursiveStep().getClass().getSimpleName() +
+                            "_0.png", ImageFormat.PNG, image3);
+
+    doIterations(recursiveCalls, input, fractalGenerator3, imageGenerator2);
+  }
+
+  static <T extends Shape> void doIterations(int recursiveCalls,
+                                             List<T> input,
+                                             FractalGenerator<T> fractalGenerator,
+                                             ImageGenerator<T> imageGenerator) {
+    String className = fractalGenerator.getRecursiveStep().getClass().getSimpleName();
+    for (int iteration = 1; iteration <= recursiveCalls; iteration++) {
+      var fractal = fractalGenerator.generate(input, 1);
+      input = fractal;
+      var image = imageGenerator.paint(fractal);
+
+      if (GENERATE_INTERMADIATE_IMAGE || iteration == recursiveCalls) {
+        persistImageToResources(className + "_" +
+                                iteration + ".png", ImageFormat.PNG, image);
+      }
+
+    }
+  }
+
+  static BufferedImage loadImageFromResources(String resourcePath) {
+    try {
+      String filePath = INPUT_DIR + resourcePath;
+      File file = new File(filePath);
+      return ImageIO.read(file);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  static void persistImageToResources(String resourcePath,
+                                      ImageFormat format,
+                                      BufferedImage image) {
+    try {
+      String destPath = OUTPUT_DIR + resourcePath;
+      File file = new File(destPath);
+      ImageIO.write(image, format.toString(), file);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 }

@@ -29,7 +29,7 @@ public class KochSnowflakeRecursiveStep
 
   private int calculateSign(LineSegment cd) {
     int orderSign = cd.beg().compareTo(cd.end()) < 0 ? 1 : -1;
-    int slopeSign = cd.getSlope() > 0 ? -1 : 1;
+    int slopeSign = cd.getSlope() > 0.01 ? -1 : 1;
     return slopeSign * orderSign;
   }
 }
