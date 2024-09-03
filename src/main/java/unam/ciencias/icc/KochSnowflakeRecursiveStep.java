@@ -23,7 +23,7 @@ public class KochSnowflakeRecursiveStep
     var orthogonalLineByE = StraightLine.build(cd.beg(), cd.end())
                                         .getOrthogonalAtPoint(e);
     var circle = new Circle(cd.beg(), cd.getLength());
-    return circle.intercept(orthogonalLineByE, calculateSign(cd))
+    return circle.intersect(orthogonalLineByE, calculateSign(cd))
                  .orElseThrow();
   }
 

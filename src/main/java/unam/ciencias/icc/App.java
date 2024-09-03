@@ -15,7 +15,7 @@ public class App {
 
   public static void main(String[] args) {
     System.out.println("Doing WORK");
-    runSierpinskiTriangleExample(6);
+    runSierpinskiTriangleExample(7);
     runKockSnowflakeExample(5);
     runDragonCurveExample(15);
   }

@@ -18,7 +18,7 @@ public class Circle {
     this.radius = radius;
   }
 
-  public Optional<Point2D> intercept(StraightLine line, int sign) {
+  public Optional<Point2D> intersect(StraightLine line, int sign) {
     float x, y;
     if (line.isVertical()) {
       // x is the same for any y

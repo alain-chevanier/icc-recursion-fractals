@@ -75,7 +75,7 @@ public class StraightLine {
     return (-b*y + c) / a;
   }
 
-  public Optional<Point2D> intercept(StraightLine line) {
+  public Optional<Point2D> intersect(StraightLine line) {
     float determinant = this.a * line.b - this.b * line.a;
 
     if (abs(determinant) < EPSILON) {
@@ -112,7 +112,7 @@ public class StraightLine {
 
   public float getDistance(Point2D p) {
     var orthogonalAtPoint = getOrthogonalAtPoint(p);
-    var intersection = intercept(orthogonalAtPoint);
+    var intersection = intersect(orthogonalAtPoint);
     return new LineSegment(intersection.get(), p).getLength();
 
   }

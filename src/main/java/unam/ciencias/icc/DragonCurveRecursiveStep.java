@@ -20,7 +20,7 @@ public class DragonCurveRecursiveStep
     var circle = new Circle(center, radius);
     var line = StraightLine.build(lineSegment.beg(), lineSegment.end())
                            .getOrthogonalAtPoint(center);
-    return circle.intercept(line, calculateSign(lineSegment))
+    return circle.intersect(line, calculateSign(lineSegment))
                  .orElseThrow();
   }
 
