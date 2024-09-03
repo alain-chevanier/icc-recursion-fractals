@@ -142,7 +142,6 @@ public class DragonCurveRecursiveStepTest {
     var a = new Point2D(0f, 0f);
     var b = new Point2D(5.1106326E-8f, -400f);
 
-    System.out.println(Math.abs(a.x() - b.x()) < 0.01);
     var lineSegment = new LineSegment(a, b);
 
     var actualOutput = recursiveStep.apply(lineSegment);
